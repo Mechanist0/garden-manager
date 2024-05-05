@@ -1,6 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DatabaseManager {
     private static Connection databaseConnection;
@@ -22,6 +20,20 @@ public class DatabaseManager {
             System.out.println("Trolled");
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    // Run queries from here so that the database connection never has to leave this class
+    public static ResultSet executeQuery(String query) {
+        try {
+            try (Statement statement = getConnection().createStatement()) {
+                return statement.executeQuery(query);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (NullPointerException np) {
+            System.out.println("null");
         }
         return null;
     }
