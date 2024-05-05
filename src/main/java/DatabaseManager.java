@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Objects;
 
 public class DatabaseManager {
     private static Connection databaseConnection;
@@ -24,18 +25,12 @@ public class DatabaseManager {
         return null;
     }
 
-    // Run queries from here so that the database connection never has to leave this class
-    public static ResultSet executeQuery(String query) {
+    public static Statement getStatement() {
         try {
-            try (Statement statement = getConnection().createStatement()) {
-                return statement.executeQuery(query);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (NullPointerException np) {
-            System.out.println("null");
+            return Objects.requireNonNull(getConnection()).createStatement();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
     // Close connection

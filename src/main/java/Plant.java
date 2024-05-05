@@ -1,4 +1,8 @@
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Plant {
@@ -10,7 +14,7 @@ public class Plant {
     private int totalFruit;
     private int harvestedFruit;
     private int failedFruit;
-    private Map<Date, Integer> heightTime;
+    private Map<Date, Integer> heightTime = new HashMap<>();
 
     public Plant(int plantID, String name, String description, Date lastWatered, Date datePlanted, int totalFruit, int harvestedFruit, int failedFruit) {
         this.plantID = plantID;
@@ -21,6 +25,21 @@ public class Plant {
         this.totalFruit = totalFruit;
         this.harvestedFruit = harvestedFruit;
         this.failedFruit = failedFruit;
+    }
+
+    private void heightInitializer() throws SQLException {
+        String query = "SELECT * FROM plantheight";
+        Statement statement = DatabaseManager.getStatement();
+        ResultSet set = statement.executeQuery(query);
+        while(set.next()) {
+            int plantID = set.getInt("plantid");
+            int height = set.getInt("height");
+            Date date = set.getDate("date");
+            if(plantID == this.plantID) {
+                heightTime.put(date, height);
+            }
+        }
+        statement.close();
     }
 
     // Getters
@@ -56,7 +75,9 @@ public class Plant {
         return failedFruit;
     }
 
-    public Map<Date, Integer> getHeightTime() {
+    // If empty, run a query that gets all the date that is connected to this plant id
+    public Map<Date, Integer> getHeightTime() throws SQLException {
+        this.heightInitializer();
         return heightTime;
     }
 
@@ -95,5 +116,12 @@ public class Plant {
 
     public void setHeightTime(Map<Date, Integer> heightTime) {
         this.heightTime = heightTime;
+    }
+
+    // ToString
+
+    @Override
+    public String toString() {
+        return "Plant: " + plantID + " " + name + " " + description;
     }
 }
