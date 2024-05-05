@@ -1,16 +1,19 @@
-import java.io.DataInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.*;
 
 public class client {
 
-    public static void main(String[] args) throws SQLException, IOException {
-        GardenController.gardenInit();
-        GardenController.bucketInit();
-        GardenController.plantInit();
-
-        startUI();
-
+    public static void main(String[] args)  {
+        try {
+            GardenController.gardenInit();
+            GardenController.bucketInit();
+            GardenController.plantInit();
+            startUI();
+        } catch (SQLException | IOException e) {
+            throw new RuntimeException(e);
+        }
         DatabaseManager.closeConnection();
     }
 
@@ -19,11 +22,12 @@ public class client {
     // Buckets - check and place into garden
     // Plants - check and place into bucket
     public static void startUI() throws IOException, SQLException {
-        DataInputStream reader = new DataInputStream(System.in);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
         System.out.println("Welcome to the Garden");
         boolean running = true;
         while (running) {
-            // List of avaliable operation
+            // List of available operation
             System.out.print("""
                     Choose an operation:
                     1: Get all gardens
