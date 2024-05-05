@@ -15,7 +15,6 @@ public class client {
 
                     System.out.println(gardenID + " " + description);
                 }
-
             }
         } catch (NullPointerException np) {
             System.out.println("null");
