@@ -30,6 +30,7 @@ public class client {
             // List of available operation
             System.out.print("""
                     Choose an operation:
+                    0: Close
                     1: Get all gardens
                     2: Get all buckets
                     3: Get all plants
@@ -53,11 +54,12 @@ public class client {
                     21: Update Bucket
                     22: Update Plant
                     """);
-            int inputInt = Integer.parseInt(reader.readLine());
 
             String sql = "";
             PreparedStatement preparedStatement;
             String input = "";
+            int inputInt = Integer.parseInt(reader.readLine());
+            Date dateinput = new Date(0);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("You inserted: ");
 
@@ -128,15 +130,23 @@ public class client {
 
                 // Add new Garden
                 case 8:
-                    System.out.println("Provide garden description:");
-                    sql = "INSERT INTO garden (description) VALUES (?)";
+                    sql = "INSERT INTO garden (gardenid, description) VALUES (?, ?)";
                     preparedStatement = DatabaseManager.getConnection().prepareStatement(sql);
 
+                    System.out.println("Provide garden id:");
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
+                    stringBuilder.append(" ");
+                    stringBuilder.append(inputInt);
+
                     // Create a prepared statement
+                    System.out.println("Provide garden description:");
                     input = reader.readLine();
-                    preparedStatement.setString(1, input);
+                    preparedStatement.setString(2, input);
                     stringBuilder.append(" ");
                     stringBuilder.append(input);
+
+
                     System.out.println(stringBuilder);
                     System.out.println("Confirm Commit? y/n");
                     preparedStatement.executeUpdate();
@@ -157,13 +167,19 @@ public class client {
 
                 // Add new Bucket
                 case 9:
-                    System.out.println("Provide bucket description:");
-                    sql = "INSERT INTO bucket (description) VALUES (?)";
+                    sql = "INSERT INTO bucket (bucketid, description) VALUES (?, ?)";
                     preparedStatement = DatabaseManager.getConnection().prepareStatement(sql);
 
+                    System.out.println("Provide bucket id:");
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
+                    stringBuilder.append(" ");
+                    stringBuilder.append(inputInt);
+
                     // Create a prepared statement
+                    System.out.println("Provide bucket description:");
                     input = reader.readLine();
-                    preparedStatement.setString(1, input);
+                    preparedStatement.setString(2, input);
                     stringBuilder.append(" ");
                     stringBuilder.append(input);
 
@@ -186,50 +202,56 @@ public class client {
 
                 // Add new Plant
                 case 10:
-                    sql = "INSERT INTO plant (Name, Description, LastWatered, DatePlanted, TotalFruit, HarvestedFruit, FailedFruit) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    sql = "INSERT INTO plant (plantid, Name, Description, LastWatered, DatePlanted, TotalFruit, HarvestedFruit, FailedFruit) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                     preparedStatement = DatabaseManager.getConnection().prepareStatement(sql);
 
-                    System.out.println("Provide plant name:");
-                    input = reader.readLine();
-                    preparedStatement.setString(1, input);
+                    System.out.println("Provide plant ID:");
+                    inputInt = Integer.valueOf(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(input);
+                    stringBuilder.append(inputInt);
 
-                    System.out.println("Provide plant Description:");
+                    System.out.println("Provide plant name:");
                     input = reader.readLine();
                     preparedStatement.setString(2, input);
                     stringBuilder.append(" ");
                     stringBuilder.append(input);
 
-                    System.out.println("Provide plant LastWatered (yyyy-mm-dd):");
-                    Date dinput = Date.valueOf(reader.readLine());
-                    preparedStatement.setDate(3, dinput);
+                    System.out.println("Provide plant Description:");
+                    input = reader.readLine();
+                    preparedStatement.setString(3, input);
                     stringBuilder.append(" ");
-                    stringBuilder.append(dinput);
+                    stringBuilder.append(input);
+
+                    System.out.println("Provide plant LastWatered (yyyy-mm-dd):");
+                    dateinput = Date.valueOf(reader.readLine());
+                    preparedStatement.setDate(4, dateinput);
+                    stringBuilder.append(" ");
+                    stringBuilder.append(dateinput);
 
                     System.out.println("Provide plant DatePlanted (yyyy-mm-dd):");
-                    dinput = Date.valueOf(reader.readLine());
-                    preparedStatement.setDate(4, dinput);
+                    dateinput = Date.valueOf(reader.readLine());
+                    preparedStatement.setDate(5, dateinput);
                     stringBuilder.append(" ");
-                    stringBuilder.append(dinput);
+                    stringBuilder.append(dateinput);
 
                     System.out.println("Provide plant TotalFruit:");
-                    int intinput = Integer.valueOf(reader.readLine());
-                    preparedStatement.setInt(5, intinput);
+                    inputInt = Integer.valueOf(reader.readLine());
+                    preparedStatement.setInt(6, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(intinput);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide plant HarvestedFruit:");
-                    intinput = Integer.valueOf(reader.readLine());
-                    preparedStatement.setInt(6, intinput);
+                    inputInt = Integer.valueOf(reader.readLine());
+                    preparedStatement.setInt(7, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(intinput);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide plant FailedFruit:");
-                    intinput = Integer.valueOf(reader.readLine());
-                    preparedStatement.setInt(7, intinput);
+                    inputInt = Integer.valueOf(reader.readLine());
+                    preparedStatement.setInt(8, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(intinput);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
@@ -251,25 +273,31 @@ public class client {
 
                 // Add height to plant
                 case 11:
-                    sql = "INSERT INTO plantheight (PlantID, Height, Date) VALUES (?, ?, ?)";
+                    sql = "INSERT INTO plantheight (PHID, PlantID, Height, Date) VALUES (?, ?, ?, ?)";
                     preparedStatement = DatabaseManager.getConnection().prepareStatement(sql);
 
                     // Create a prepared statement
-                    System.out.println("Provide PlantID:");
-                    int iinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, iinput);
+                    System.out.println("Provide PlantHeight ID:");
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iinput);
+                    stringBuilder.append(inputInt);
+
+                    System.out.println("Provide PlantID:");
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(2, inputInt);
+                    stringBuilder.append(" ");
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide Height:");
-                    iinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(2, iinput);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(3, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iinput);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide Date:");
                     Date dnput = Date.valueOf(reader.readLine());
-                    preparedStatement.setDate(3, dnput);
+                    preparedStatement.setDate(4, dnput);
                     stringBuilder.append(" ");
                     stringBuilder.append(dnput.toString());
 
@@ -293,21 +321,27 @@ public class client {
 
                 // Add plant to bucket
                 case 12:
-                    sql = "INSERT INTO BucketPlant (BucketID, PlantID) VALUES (?, ?)";
+                    sql = "INSERT INTO BucketPlant (BPID, BucketID, PlantID) VALUES (?, ?, ?)";
                     preparedStatement = DatabaseManager.getConnection().prepareStatement(sql);
 
                     // Create a prepared statement
-                    System.out.println("Provide BucketID:");
-                    int iiinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, iiinput);
+                    System.out.println("Provide BucketPlant ID:");
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iiinput);
+                    stringBuilder.append(inputInt);
+
+                    System.out.println("Provide BucketID:");
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(2, inputInt);
+                    stringBuilder.append(" ");
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide PlantID:");
-                    iiinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(2, iiinput);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(3, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iiinput);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
@@ -329,21 +363,27 @@ public class client {
 
                 // Add bucket to garden
                 case 13:
-                    sql = "INSERT INTO GardenBucket (GardenID, BucketID) VALUES (?, ?)";
+                    sql = "INSERT INTO GardenBucket (GBID, GardenID, BucketID) VALUES (?, ?, ?)";
                     preparedStatement = DatabaseManager.getConnection().prepareStatement(sql);
 
                     // Create a prepared statement
-                    System.out.println("Provide GardenID:");
-                    int iiiinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, iiiinput);
+                    System.out.println("Provide GardenBucket ID:");
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iiiinput);
+                    stringBuilder.append(inputInt);
+
+                    System.out.println("Provide GardenID:");
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(2, inputInt);
+                    stringBuilder.append(" ");
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide BucketID:");
-                    iiiinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(2, iiiinput);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(3, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iiiinput);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
@@ -370,16 +410,16 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide BucketID:");
-                    int iiiiinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, iiiiinput);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iiiiinput);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide PlantID:");
-                    iiiiinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(2, iiiiinput);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(2, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iiiiinput);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
@@ -406,16 +446,16 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide GardenID:");
-                    int iiiiiinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, iiiiiinput);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iiiiiinput);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide BucketID:");
-                    iiiiiinput = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(2, iiiiiinput);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(2, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(iiiiiinput);
+                    stringBuilder.append(inputInt);
                     preparedStatement.executeUpdate();
 
                     System.out.println(stringBuilder);
@@ -441,10 +481,10 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide PlantHeight ID:");
-                    int input1 = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, input1);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(input1);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
@@ -471,10 +511,10 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide GardenID:");
-                    int input2 = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, input2);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(input2);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
@@ -501,10 +541,10 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide BucketID:");
-                    int input3 = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, input3);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(input3);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
@@ -531,10 +571,10 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide plantID:");
-                    int input4 = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(1, input4);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(1, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(input4);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
@@ -565,10 +605,10 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide gardenID to update:");
-                    int input5 = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(2, input5);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(2, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(input5);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide updated description:");
                     input = reader.readLine();
@@ -605,10 +645,10 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide bucketID to update:");
-                    int input6 = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(2, input6);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(2, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(input6);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide updated description:");
                     input = reader.readLine();
@@ -641,10 +681,10 @@ public class client {
 
                     // Create a prepared statement
                     System.out.println("Provide plantID to update:");
-                    int input7 = Integer.parseInt(reader.readLine());
-                    preparedStatement.setInt(8, input7);
+                    inputInt = Integer.parseInt(reader.readLine());
+                    preparedStatement.setInt(8, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(input7);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide plant name:");
                     input = reader.readLine();
@@ -659,34 +699,34 @@ public class client {
                     stringBuilder.append(input);
 
                     System.out.println("Provide plant LastWatered (yyyy-mm-dd):");
-                    Date dinput1 = Date.valueOf(reader.readLine());
-                    preparedStatement.setDate(3, dinput1);
+                    dateinput = Date.valueOf(reader.readLine());
+                    preparedStatement.setDate(3, dateinput);
                     stringBuilder.append(" ");
-                    stringBuilder.append(dinput1);
+                    stringBuilder.append(dateinput);
 
                     System.out.println("Provide plant DatePlanted (yyyy-mm-dd):");
-                    dinput1 = Date.valueOf(reader.readLine());
-                    preparedStatement.setDate(4, dinput1);
+                    dateinput = Date.valueOf(reader.readLine());
+                    preparedStatement.setDate(4, dateinput);
                     stringBuilder.append(" ");
-                    stringBuilder.append(dinput1);
+                    stringBuilder.append(dateinput);
 
                     System.out.println("Provide plant TotalFruit:");
-                    int intinput1 = Integer.valueOf(reader.readLine());
-                    preparedStatement.setInt(5, intinput1);
+                    inputInt = Integer.valueOf(reader.readLine());
+                    preparedStatement.setInt(5, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(intinput1);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide plant HarvestedFruit:");
-                    intinput1 = Integer.valueOf(reader.readLine());
-                    preparedStatement.setInt(6, intinput1);
+                    inputInt = Integer.valueOf(reader.readLine());
+                    preparedStatement.setInt(6, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(intinput1);
+                    stringBuilder.append(inputInt);
 
                     System.out.println("Provide plant FailedFruit:");
-                    intinput1 = Integer.valueOf(reader.readLine());
-                    preparedStatement.setInt(7, intinput1);
+                    inputInt = Integer.valueOf(reader.readLine());
+                    preparedStatement.setInt(7, inputInt);
                     stringBuilder.append(" ");
-                    stringBuilder.append(intinput1);
+                    stringBuilder.append(inputInt);
 
                     preparedStatement.executeUpdate();
 
