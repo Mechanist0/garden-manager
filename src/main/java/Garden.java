@@ -14,6 +14,7 @@ public class Garden {
     }
 
     private void bucketInitializer() throws SQLException {
+        bucketList = new ArrayList<>();
         String query = "SELECT * FROM gardenbucket";
         Statement statement = DatabaseManager.getStatement();
         ResultSet set = statement.executeQuery(query);

@@ -28,6 +28,7 @@ public class Plant {
     }
 
     private void heightInitializer() throws SQLException {
+        heightTime = new HashMap<>();
         String query = "SELECT * FROM plantheight";
         Statement statement = DatabaseManager.getStatement();
         ResultSet set = statement.executeQuery(query);

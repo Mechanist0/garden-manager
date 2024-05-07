@@ -14,6 +14,7 @@ public class Bucket {
     }
 
     private void plantInitializer() throws SQLException {
+        plantList = new ArrayList<>();
         String query = "SELECT * FROM bucketplant";
         Statement statement = DatabaseManager.getStatement();
         ResultSet set = statement.executeQuery(query);

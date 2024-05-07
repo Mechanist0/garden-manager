@@ -9,6 +9,7 @@ public class GardenController {
     private static HashMap<Integer, Bucket> buckets = new HashMap<>();
     private static HashMap<Integer, Plant> plants = new HashMap<>();
     public static void gardenInit() throws SQLException {
+        gardens = new HashMap<>();
         String query = "SELECT * FROM garden";
         Statement statement = DatabaseManager.getStatement();
         ResultSet set = statement.executeQuery(query);
@@ -23,6 +24,7 @@ public class GardenController {
     }
 
     public static void bucketInit() throws SQLException {
+        buckets = new HashMap<>();
         String query = "SELECT * FROM bucket";
         Statement statement = DatabaseManager.getStatement();
         ResultSet set = statement.executeQuery(query);
@@ -38,6 +40,7 @@ public class GardenController {
     }
 
     public static void plantInit() throws SQLException {
+        plants = new HashMap<>();
         String query = "SELECT * FROM plant";
         Statement statement = DatabaseManager.getStatement();
         ResultSet set = statement.executeQuery(query);
@@ -59,15 +62,18 @@ public class GardenController {
 
 
     // Getters
-    public static HashMap<Integer, Garden> getGardens() {
+    public static HashMap<Integer, Garden> getGardens() throws SQLException {
+        gardenInit();
         return gardens;
     }
 
-    public static HashMap<Integer, Bucket> getBuckets() {
+    public static HashMap<Integer, Bucket> getBuckets() throws SQLException {
+        bucketInit();
         return buckets;
     }
 
-    public static HashMap<Integer, Plant> getPlants() {
+    public static HashMap<Integer, Plant> getPlants() throws SQLException {
+        plantInit();
         return plants;
     }
 
